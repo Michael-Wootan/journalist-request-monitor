@@ -1,0 +1,21 @@
+{
+  "name": "journalist-request-monitor",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Scans journalist-request digests several times a day, extracts the queries an expert can credibly answer, and drafts a pitch for each with deadline, reply-address and prompt-injection guards.",
+  "main": "src/monitor.js",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "monitor": "node src/monitor.js",
+    "dry-run": "node src/monitor.js --dry-run",
+    "report": "node src/monitor.js --report",
+    "test": "node scripts/test-helpers.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.80.0",
+    "dotenv": "^17.3.1",
+    "imap": "^0.8.19",
+    "mailparser": "^3.9.6",
+    "nodemailer": "^8.0.11"
+  }
+}

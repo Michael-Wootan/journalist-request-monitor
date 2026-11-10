@@ -1,0 +1,68 @@
+name: Journalist Request Monitor
+
+on:
+  schedule:
+    - cron: '0 11 * * *'   # four runs a day, spread across the digest send times (UTC)
+    - cron: '0 16 * * *'
+    - cron: '0 20 * * *'
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (preview matches and pitches, save and send nothing)'
+        required: false
+        default: false
+        type: boolean
+
+concurrency:
+  group: journalist-request-monitor
+  cancel-in-progress: false
+
+jobs:
+  run:
+    # Scheduled runs are off until the repository variable ENABLE_SCHEDULE is 'true',
+    # so a fresh fork or an unconfigured copy never runs (or fails) on its own.
+    if: github.event_name == 'workflow_dispatch' || vars.ENABLE_SCHEDULE == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      # config/source.json is gitignored; CI writes it from a repository variable
+      - name: Write source config
+        env:
+          SOURCE_JSON: ${{ vars.SOURCE_JSON }}
+        run: |
+          if [ -n "$SOURCE_JSON" ]; then printf '%s' "$SOURCE_JSON" > config/source.json; fi
+
+      # The log holds the processed-email list and the 30-day cooldown per query.
+      # It travels in the Actions cache and is never committed.
+      - name: Restore state
+        uses: actions/cache/restore@v4
+        with:
+          path: state
+          key: journalist-monitor-state-${{ github.run_id }}
+          restore-keys: |
+            journalist-monitor-state-
+
+      - name: Scan digests and draft pitches
+        run: node src/monitor.js ${{ inputs.dry_run && '--dry-run' || '' }}
+        env:
+          GMAIL_USER:         ${{ secrets.GMAIL_USER }}
+          GMAIL_APP_PASSWORD: ${{ secrets.GMAIL_APP_PASSWORD }}
+          ANTHROPIC_API_KEY:  ${{ secrets.ANTHROPIC_API_KEY }}
+          AUTO_SEND:          ${{ vars.AUTO_SEND }}
+          PITCH_LIMIT:        ${{ vars.PITCH_LIMIT }}
+
+      - name: Save state
+        if: always() && inputs.dry_run != true
+        uses: actions/cache/save@v4
+        with:
+          path: state
+          key: journalist-monitor-state-${{ github.run_id }}

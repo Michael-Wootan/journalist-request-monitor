@@ -1,0 +1,35 @@
+{
+  "name": "Alex Morgan",
+  "title": "Founder",
+  "company": "Acme Supply Co.",
+  "site": "acmesupply.example",
+  "contactEmail": "alex@acmesupply.example",
+  "oneLine": "a specialty coffee e-commerce and wholesale company",
+  "relevantTopics": "specialty coffee, sourcing and roasting, the coffee market, e-commerce, food and beverage trends, entrepreneurship and founder stories, supply chain, wholesale and international trade",
+  "context": [
+    "Acme Supply Co. (acmesupply.example) is a specialty coffee e-commerce company run by Alex Morgan. Key business lines:",
+    "1. E-commerce: roasted coffee and brewing equipment sold direct to consumers",
+    "2. Wholesale: supplying cafes, grocers and distributors",
+    "3. Sourcing: buying green coffee in bulk from origin",
+    "",
+    "Alex Morgan is available as an expert source on:",
+    "- Green coffee pricing, supply and demand",
+    "- Running an e-commerce business in food and beverage",
+    "- International sourcing and trade logistics",
+    "- The realities of building a small wholesale business"
+  ],
+  "highRelevance": [
+    "coffee", "espresso", "roasting", "roaster", "cafe", "barista",
+    "green coffee", "specialty coffee", "coffee market", "coffee prices"
+  ],
+  "mediumRelevance": [
+    "commodity trading", "agricultural commodity", "import export", "supply chain",
+    "b2b", "procurement", "e-commerce", "ecommerce", "food and beverage",
+    "entrepreneur", "entrepreneurship", "founder", "small business"
+  ],
+  "contentRules": [
+    "NEVER make shipping or delivery promises",
+    "NEVER make health or legal claims",
+    "NEVER invent statistics; give a figure only if it is in the context above"
+  ]
+}
