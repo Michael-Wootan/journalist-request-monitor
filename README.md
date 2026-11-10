@@ -67,15 +67,6 @@ flowchart TD
 
 **The expert profile is config.** Who the source is, what they can credibly speak to, the keyword lists and the hard content rules live in `config/source.json`. The pitch prompt may not go beyond that context.
 
-## Results
-
-From the production log, October 18 to November 9, 2026:
-
-- **90** runs read **59** digests.
-- **2** queries passed every gate and were pitched.
-
-The numbers are small on purpose. The job's value is reading everything and staying quiet unless a query is a real fit.
-
 ## Repository layout
 
 ```
